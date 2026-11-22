@@ -458,7 +458,7 @@ build_aether() {
       # because the resulting APK looks complete and has no Tor in it.
       echo "    WARNING: building WITHOUT cargo features - the app's Tor modes will NOT work." >&2
     fi
-    ( cd "${crate}" && ANDROID_NDK_ROOT="${ANDROID_NDK_HOME}" cargo ndk -t "${abi}" --platform "${API}" build --release --locked "${feature_args[@]}" )
+    ( cd "${crate}" && ANDROID_NDK_ROOT="${ANDROID_NDK_HOME}" RUSTFLAGS="${RUSTFLAGS:-} -C link-arg=-Wl,-soname,libaether.so" cargo ndk -t "${abi}" --platform "${API}" build --release --locked "${feature_args[@]}" )
 
     local reldir="${CARGO_TARGET_DIR}/${triple}/release"
     local artifact=""
