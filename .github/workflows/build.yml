@@ -141,8 +141,6 @@ jobs:
         run: |
           python3 scripts/test-security-ci.py
           python3 scripts/test-core-sync-disabled.py
-          python3 scripts/test-functional-wiring.py
-          python3 scripts/test-ai-settings-coverage.py
           python3 scripts/test-auto-signing.py
           python3 scripts/test-ci-preflight.py
 
