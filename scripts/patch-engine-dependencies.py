@@ -15,7 +15,8 @@ FIXES = (("quinn-proto", (0, 11), (0, 11, 19), "RUSTSEC-2026-0338/0523/0524"),
          ("zstd", (0, 14), (0, 14, 3), "RUSTSEC-2026-0391"),
          ("zstd-safe", (8, 0), (8, 2, 0), "RUSTSEC-2026-0398/0403 (and unsound 0395-0406)"),
          ("zstd-sys", (2, 1), (2, 1, 2), "RUSTSEC-2026-0410"),
-         ("ctutils", (0, 4), (0, 4, 4), "RUSTSEC-2026-0385"))
+         ("ctutils", (0, 4), (0, 4, 4), "RUSTSEC-2026-0385"),
+         ("url", (2, 5), (2, 5, 9), "RUSTSEC-2026-0592"))
 
 
 def patch(crate):
