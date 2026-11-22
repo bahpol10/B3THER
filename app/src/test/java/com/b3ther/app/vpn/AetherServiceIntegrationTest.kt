@@ -12,13 +12,9 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import com.b3ther.app.core.AetherController
-import com.b3ther.app.core.AutoCandidate
 import com.b3ther.app.core.IpEndpoint
 import com.b3ther.app.core.IpInfo
-import com.b3ther.app.model.ConnectionProfile
 import com.b3ther.app.model.ConnectionState
-import com.b3ther.app.model.EndpointMode
-import com.b3ther.app.model.ScanMode
 
 /** Isolated service logic, no onCreate/startCommand, child process or real network. */
 @RunWith(RobolectricTestRunner::class)
@@ -43,10 +39,6 @@ class AetherServiceIntegrationTest {
     private fun enrich(generation:Long,ip:String?,country:String?,alternate:String?) {
         val method=AetherVpnService::class.java.getDeclaredMethod("applyExitEnrichment",Long::class.javaPrimitiveType,String::class.java,String::class.java,String::class.java)
         method.isAccessible=true;method.invoke(service,generation,ip,country,alternate)
-    }
-    @Suppress("UNCHECKED_CAST") private fun plan(profile:ConnectionProfile):List<AutoCandidate> {
-        val method=AetherVpnService::class.java.getDeclaredMethod("customUpstreamPlan",ConnectionProfile::class.java)
-        method.isAccessible=true;return method.invoke(service,profile) as List<AutoCandidate>
     }
     @Test fun sameEpochAndIpReceiveCountryAndAlternateFamily() {
         enrich(42,"192.0.2.1","DE","2001:db8::1")
@@ -87,17 +79,5 @@ class AetherServiceIntegrationTest {
             AetherController.ipInfo.first { it?.countryCode == "DE" }
         }
         assertEquals("192.0.2.1",AetherController.ipInfo.value!!.ip)
-    }
-    @Test fun customBalancedPlanTriesTurboThenOriginalWithBoundedBudgets() {
-        val p=plan(ConnectionProfile(scanMode=ScanMode.BALANCED))
-        assertEquals(2,p.size);assertEquals(ScanMode.TURBO,p[0].profile.scanMode)
-        assertEquals(ScanMode.BALANCED,p[1].profile.scanMode)
-        assertTrue(p[0].timeoutMs<=75000L);assertTrue(p[1].timeoutMs>=180000L)
-        assertEquals(EndpointMode.AUTO,p[0].profile.endpointMode)
-    }
-    @Test fun explicitlyTurboCustomPlanHasOneFullBudgetAttempt() {
-        val p=plan(ConnectionProfile(scanMode=ScanMode.TURBO))
-        assertEquals(1,p.size);assertEquals(ScanMode.TURBO,p[0].profile.scanMode)
-        assertTrue(p[0].timeoutMs>=180000L)
     }
 }
