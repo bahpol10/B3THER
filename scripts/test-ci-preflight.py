@@ -47,7 +47,7 @@ class PreflightTests(unittest.TestCase):
 
     def test_shipping_and_security_guards_are_still_present(self):
         names = [name for name, _ in steps()]
-        for name in ['Enforce release tree (remove files from older versions)',
+        for name in ['Purge stale sources from older versions',
                      'Audit Rust dependencies (cargo audit)', 'Build release APKs',
                      'Verify release signature (Play Protect safeguard)',
                      'Verify native libraries inside APKs']:
