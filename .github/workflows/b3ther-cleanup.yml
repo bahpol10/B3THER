@@ -1,0 +1,35 @@
+name: Cleanup stale fork tests
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Delete stale fork test files
+        run: |
+          rm -rf app/src/test/java/com/b3ther/app/ai \
+                 app/src/test/java/com/b3ther/app/custom \
+                 app/src/test/java/com/b3ther/app/scanner \
+                 app/src/test/java/com/b3ther/app/ui
+          rm -f app/src/test/java/com/b3ther/app/data/AnnouncementStoreTest.kt \
+                app/src/test/java/com/b3ther/app/data/PresetImportRoundTripTest.kt \
+                app/src/test/java/com/b3ther/app/data/PresetStoreTest.kt \
+                app/src/test/java/com/b3ther/app/data/PresetTransferTest.kt \
+                app/src/test/java/com/b3ther/app/data/SystemDefaultPresetTest.kt \
+                app/src/test/java/com/b3ther/app/core/TeamMembershipTest.kt \
+                app/src/test/java/com/b3ther/app/core/TeamSignInRecordTest.kt \
+                app/src/test/java/com/b3ther/app/core/ZeroTrustSignInTest.kt \
+                app/src/test/java/com/b3ther/app/core/ZeroTrustWebTest.kt
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Remove stale fork unit tests (AI/custom/scanner/team/zerotrust/preset features not in B3THER)"
+          git push
