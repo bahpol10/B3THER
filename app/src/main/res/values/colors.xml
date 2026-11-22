@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="b3hman_background">#0C0F0E</color>
+    <color name="b3hman_surface">#131816</color>
+    <color name="b3hman_primary">#00E5C0</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>
